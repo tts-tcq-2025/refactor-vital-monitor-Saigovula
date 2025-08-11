@@ -3,5 +3,6 @@
 
 int vitalsOk(float temperature, float pulseRate, float spo2);
 
-#endif
+#endif  // MONITOR_H_
+
 
