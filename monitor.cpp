@@ -1,4 +1,4 @@
-#include "monitor.h"
+#include "./monitor.h"
 #include <stdio.h>
 #include <unistd.h>
 
