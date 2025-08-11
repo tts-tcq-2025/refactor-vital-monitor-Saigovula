@@ -2,20 +2,18 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// Config table: just add more vitals here
-const VitalLimit vitalLimits[] = {
-    {"Temperature", 95.0f, 102.0f, "Temperature is critical!"},
-    {"Pulse Rate",  60.0f, 100.0f, "Pulse Rate is out of range!"},
-    {"SpO2",        90.0f, 200.0f, "Oxygen Saturation out of range!"}
-};
-const int numVitals = sizeof(vitalLimits) / sizeof(vitalLimits[0]);
+typedef struct {
+    const char *name;
+    float min;
+    float max;
+    const char *alertMsg;
+} VitalLimit;
 
-// Pure function
-static int valueInRange(float value, float min, float max) {
+// ---- Internal reusable helpers ----
+static int isValueInRange(float value, float min, float max) {
     return (value >= min && value <= max);
 }
 
-// I/O helpers
 static void blinkPattern(void) {
     printf("\r* ");
     fflush(stdout);
@@ -25,7 +23,7 @@ static void blinkPattern(void) {
     sleep(1);
 }
 
-static void alertAnimation(const char* message) {
+static void alertAnimation(const char *message) {
     printf("%s\n", message);
     fflush(stdout);
     for (int i = 0; i < 6; i++) {
@@ -34,10 +32,20 @@ static void alertAnimation(const char* message) {
     printf("\n");
 }
 
-// Public API
-int isVitalOk(const float* readings) {
+// ---- Configuration Table ----
+static const VitalLimit vitalLimits[] = {
+    {"Temperature", 95.0f, 102.0f, "Temperature is critical!"},
+    {"Pulse Rate",  60.0f, 100.0f, "Pulse Rate is out of range!"},
+    {"SpO2",        90.0f, 200.0f, "Oxygen Saturation out of range!"}
+};
+
+// ---- Public API ----
+int vitalsOk(float temperature, float pulseRate, float spo2) {
+    float readings[] = {temperature, pulseRate, spo2};
+    int numVitals = sizeof(vitalLimits) / sizeof(vitalLimits[0]);
+
     for (int i = 0; i < numVitals; i++) {
-        if (!valueInRange(readings[i], vitalLimits[i].min, vitalLimits[i].max)) {
+        if (!isValueInRange(readings[i], vitalLimits[i].min, vitalLimits[i].max)) {
             alertAnimation(vitalLimits[i].alertMsg);
             return 0;
         }
