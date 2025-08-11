@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 extern "C" {
-    #include "monitor.h"
+    #include "./monitor.h"
 }
 
 TEST(Monitor, AllVitalsInRange) {
@@ -20,3 +20,4 @@ TEST(Monitor, PulseRateOutOfRange) {
 TEST(Monitor, SpO2OutOfRange) {
     EXPECT_FALSE(vitalsOk(98.6f, 70.0f, 85.0f));
 }
+
