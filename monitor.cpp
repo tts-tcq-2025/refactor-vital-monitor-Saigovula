@@ -35,8 +35,9 @@ static void alertAnimation(const char *message) {
 // ---- Configuration Table ----
 static const VitalLimit vitalLimits[] = {
     {"Temperature", 95.0f, 102.0f, "Temperature is critical!"},
-    {"Pulse Rate",  60.0f, 100.0f, "Pulse Rate is out of range!"},
     {"SpO2",        90.0f, 200.0f, "Oxygen Saturation out of range!"}
+    {"Pulse Rate",  60.0f, 100.0f, "Pulse Rate is out of range!"},
+  
 };
 
 // ---- Public API ----
